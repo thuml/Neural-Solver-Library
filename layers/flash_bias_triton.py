@@ -1348,10 +1348,10 @@ class FlashBiasFunc(torch.autograd.Function):
         """
         q: (batch_size, seqlen_q, nheads, headdim)
         k, v: (batch_size, seqlen_k, nheads, headdim)
-        q_bias: (batch_size, seqlen_q, nheads, headdim) or (1, seqlen_q, nheads, headdim)
-        k_bias: (batch_size, seqlen_k, nheads, headdim) or (1, seqlen_k, nheads, headdim)
+        q_bias: (batch_size, seqlen_q, nheads, rankdim) or (1, seqlen_q, nheads, rankdim) or (1, seqlen_q, 1, rankdim) or (batch_size, seqlen_q, 1, rankdim)
+        k_bias: (batch_size, seqlen_k, nheads, rankdim) or (1, seqlen_k, nheads, rankdim) or (1, seqlen_q, 1, rankdim) or (batch_size, seqlen_q, 1, rankdim)
         mask: optional, shape broadcastible to (batch, nheads, seqlen_q, seqlen_k).
-        softmax_scale: should be set as 1, otherwise directly multiply to q vector.
+        softmax_scale: should be set as 1 / sqrt(headdim), otherwise directly multiply to the q vector. If without any input, it will be set as 1 / sqrt(headdim)
         """
         # Make sure that the last dimension is contiguous
         if q_bias is not None:
