@@ -67,6 +67,8 @@ parser.add_argument('--modes', type=int, default=12, help='number of basis funct
 parser.add_argument('--psi_dim', type=int, default=8, help='number of psi_dim for ONO')
 parser.add_argument('--attn_type', type=str, default='nystrom',help='attn_type for ONO, select from nystrom, linear, selfAttention')
 parser.add_argument('--mwt_k', type=int, default=3,help='number of wavelet basis functions for MWT')
+parser.add_argument('--standardize_query_pos', type=bool, default=False, help='standardize query pos in UPT')   
+parser.add_argument('--num_output_tokens', type=int, default=1024, help='number of output tokens for perceiver in UPT')
 
 ## eval
 parser.add_argument('--eval', type=int, default=0, help='evaluation or not')

@@ -23,6 +23,7 @@ class plas(object):
         self.T_out = args.T_out
         self.normalize = args.normalize
         self.norm_type = args.norm_type
+        self.args = args
         
         # Validate norm_type
         if self.norm_type not in ["UnitTransformer", "UnitGaussianNormalizer"]:
@@ -112,6 +113,11 @@ class plas(object):
         pos_train = pos.repeat(self.ntrain, 1, 1)
         pos_test = pos.repeat(self.ntest, 1, 1)
 
+        if self.args.model == 'UPT':
+            scale = 200
+            pos_train = pos_train * scale
+            pos_test = pos_test * scale
+
         t = np.linspace(0, 1, self.T_out)
         t = torch.tensor(t, dtype=torch.float).unsqueeze(0)
         t_train = t.repeat(self.ntrain, 1)
@@ -137,6 +143,7 @@ class elas(object):
         self.ntest = args.ntest
         self.normalize = args.normalize
         self.norm_type = args.norm_type
+        self.args = args
         
         # Validate norm_type
         if self.norm_type not in ["UnitTransformer", "UnitGaussianNormalizer"]:
@@ -152,6 +159,13 @@ class elas(object):
         test_s = input_s[-self.ntest:, :, None]
         train_xy = input_xy[:self.ntrain]
         test_xy = input_xy[-self.ntest:]
+
+        if self.args.model == 'UPT':
+            domain_min = input_xy.reshape(-1, 2).min(dim=0).values
+            domain_max = input_xy.reshape(-1, 2).max(dim=0).values
+            scale = 200
+            train_xy = (train_xy - domain_min) / (domain_max - domain_min) * scale
+            test_xy = (test_xy - domain_min) / (domain_max - domain_min) * scale
 
         print(input_s.shape, input_xy.shape)
 
@@ -187,6 +201,7 @@ class pipe(object):
         self.ntest = args.ntest
         self.normalize = args.normalize
         self.norm_type = args.norm_type
+        self.args = args
         
         # Validate norm_type
         if self.norm_type not in ["UnitTransformer", "UnitGaussianNormalizer"]:
@@ -216,6 +231,15 @@ class pipe(object):
         x_test = x_test.reshape(self.ntest, -1, 2)
         y_train = y_train.reshape(self.ntrain, -1, 1)
         y_test = y_test.reshape(self.ntest, -1, 1)
+
+        if self.args.model == 'UPT':
+            x_all = torch.cat([x_train, x_test], dim=0)
+            domain_min = x_all.reshape(-1, 2).min(dim=0).values
+            domain_max = x_all.reshape(-1, 2).max(dim=0).values
+            scale = 200
+
+            x_train = (x_train - domain_min) / (domain_max - domain_min) * scale
+            x_test = (x_test - domain_min) / (domain_max - domain_min) * scale
 
         if self.normalize:
             # Use appropriate normalizer based on norm_type
@@ -255,6 +279,7 @@ class airfoil(object):
         self.ntest = args.ntest
         self.normalize = args.normalize
         self.norm_type = args.norm_type
+        self.args = args
         
         # Validate norm_type
         if self.norm_type not in ["UnitTransformer", "UnitGaussianNormalizer"]:
@@ -284,6 +309,14 @@ class airfoil(object):
         x_test = x_test.reshape(self.ntest, -1, 2)
         y_train = y_train.reshape(self.ntrain, -1, 1)
         y_test = y_test.reshape(self.ntest, -1, 1)
+
+        if self.args.model == 'UPT':
+            x_all = torch.cat([x_train, x_test], dim=0)
+            domain_min = x_all.reshape(-1, 2).min(dim=0).values
+            domain_max = x_all.reshape(-1, 2).max(dim=0).values
+            scale = 200
+            x_train = (x_train - domain_min) / (domain_max - domain_min) * scale
+            x_test = (x_test - domain_min) / (domain_max - domain_min) * scale
 
         if self.normalize:
             # Use appropriate normalizer based on norm_type
@@ -322,6 +355,7 @@ class darcy(object):
         self.ntest = args.ntest
         self.normalize = args.normalize
         self.norm_type = args.norm_type
+        self.args = args
         
         # Validate norm_type
         if self.norm_type not in ["UnitTransformer", "UnitGaussianNormalizer"]:
@@ -377,6 +411,14 @@ class darcy(object):
         pos_train = pos.repeat(self.ntrain, 1, 1)
         pos_test = pos.repeat(self.ntest, 1, 1)
 
+        if self.args.model == 'UPT':
+            pos_all = torch.cat([pos_train, pos_test], dim=0)
+            domain_min = pos_all.reshape(-1, 2).min(dim=0).values
+            domain_max = pos_all.reshape(-1, 2).max(dim=0).values
+            scale = 200
+            pos_train = (pos_train - domain_min) / (domain_max - domain_min) * scale
+            pos_test = (pos_test - domain_min) / (domain_max - domain_min) * scale
+
         train_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(pos_train, x_train, y_train),
                                                    batch_size=self.batch_size, shuffle=True)
         test_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(pos_test, x_test, y_test),
@@ -398,6 +440,7 @@ class ns(object):
         self.T_out = args.T_out
         self.normalize = args.normalize
         self.norm_type = args.norm_type
+        self.args = args
         
         # Validate norm_type
         if self.norm_type not in ["UnitTransformer", "UnitGaussianNormalizer"]:
@@ -449,6 +492,14 @@ class ns(object):
         pos_train = pos.repeat(self.ntrain, 1, 1)
         pos_test = pos.repeat(self.ntest, 1, 1)
 
+        if self.args.model == 'UPT':
+            pos_all = torch.cat([pos_train, pos_test], dim=0)
+            domain_min = pos_all.reshape(-1, 2).min(dim=0).values
+            domain_max = pos_all.reshape(-1, 2).max(dim=0).values
+            scale = 200
+            pos_train = (pos_train - domain_min) / (domain_max - domain_min) * scale
+            pos_test = (pos_test - domain_min) / (domain_max - domain_min) * scale
+
         train_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(pos_train, train_a, train_u),
                                                    batch_size=self.batch_size, shuffle=True)
         test_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(pos_test, test_a, test_u),
@@ -466,14 +517,15 @@ class pdebench_autoregressive(object):
         self.T_out = args.T_out
         self.batch_size = args.batch_size
         self.out_dim = args.out_dim
+        self.args = args
 
     def get_loader(self):
         train_dataset = pdebench_dataset_autoregressive(file_path=self.file_path, train_ratio=self.train_ratio,
                                                         test=False,
-                                                        T_in=self.T_in, T_out=self.T_out, out_dim=self.out_dim)
+                                                        T_in=self.T_in, T_out=self.T_out, out_dim=self.out_dim, model=self.args.model)
         test_dataset = pdebench_dataset_autoregressive(file_path=self.file_path, train_ratio=self.train_ratio,
                                                        test=True,
-                                                       T_in=self.T_in, T_out=self.T_out, out_dim=self.out_dim)
+                                                       T_in=self.T_in, T_out=self.T_out, out_dim=self.out_dim, model=self.args.model)
         train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=self.batch_size, shuffle=True)
         test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=self.batch_size, shuffle=True)
 
@@ -487,8 +539,10 @@ class pdebench_dataset_autoregressive(Dataset):
                  test: bool,
                  T_in: int,
                  T_out: int,
-                 out_dim: int):
+                 out_dim: int,
+                 model: str):
         self.file_path = file_path
+        self.model = model
         with h5py.File(self.file_path, "r") as h5_file:
             data_list = sorted(h5_file.keys())
             self.shapelist = h5_file[data_list[0]]["data"].shape[1:-1]  # obtain shapelist
@@ -502,8 +556,39 @@ class pdebench_dataset_autoregressive(Dataset):
         self.T_out = T_out
         self.out_dim = out_dim
 
+        self.domain_min, self.domain_max = self.compute_domain_minmax()
+        self.scale = 200
+
     def __len__(self):
         return len(self.data_list)
+
+    def compute_domain_minmax(self):
+        mins = []
+        maxs = []
+
+        with h5py.File(self.file_path, "r") as h5_file:
+            for key in self.data_list:
+                grid_grp = h5_file[key]["grid"]
+
+                coords = []
+                if "x" in grid_grp:
+                    coords.append(np.array(grid_grp["x"], dtype="f"))
+                if "y" in grid_grp:
+                    coords.append(np.array(grid_grp["y"], dtype="f"))
+                if "z" in grid_grp:
+                    coords.append(np.array(grid_grp["z"], dtype="f"))
+
+                # [N, dim]
+                pts = np.stack(np.meshgrid(*coords, indexing="ij"), axis=-1)
+                pts = pts.reshape(-1, pts.shape[-1])
+
+                mins.append(pts.min(axis=0))
+                maxs.append(pts.max(axis=0))
+
+        domain_min = torch.tensor(np.min(mins, axis=0), dtype=torch.float)
+        domain_max = torch.tensor(np.max(maxs, axis=0), dtype=torch.float)
+
+        return domain_min, domain_max
 
     def __getitem__(self, idx):
         with h5py.File(self.file_path, "r") as h5_file:
@@ -537,6 +622,9 @@ class pdebench_dataset_autoregressive(Dataset):
                 X, Y, Z = torch.meshgrid(x, y, z, indexing="ij")
                 grid = torch.stack((X, Y, Z), axis=-1)
 
+            if self.model == 'UPT':
+                grid = (grid - self.domain_min) / (self.domain_max - self.domain_min) * self.scale
+
         return grid, data[:, :self.T_in * self.out_dim], \
             data[:, (self.T_in) * self.out_dim:(self.T_in + self.T_out) * self.out_dim]
 
@@ -548,6 +636,7 @@ class pdebench_steady_darcy(object):
         self.downsamplex = args.downsamplex
         self.downsampley = args.downsampley
         self.batch_size = args.batch_size
+        self.args = args
 
     def get_loader(self):
         r1 = self.downsamplex
@@ -567,6 +656,12 @@ class pdebench_steady_darcy(object):
             grid = torch.stack((X, Y), axis=-1)[None, ::r1, ::r2, :][:, :s1, :s2, :]
 
         grid = grid.repeat(data_nu.shape[0], 1, 1, 1)
+
+        if self.args.model == 'UPT':
+            grid_min = grid.amin(dim=(0, 1, 2))   # shape: [2]
+            grid_max = grid.amax(dim=(0, 1, 2))   # shape: [2]
+            scale = 200
+            grid = (grid - grid_min) / (grid_max - grid_min) * scale
 
         pos_train = grid[:self.ntrain, :, :, :].reshape(self.ntrain, -1, 2)
         x_train = data_nu[:self.ntrain, :, :].reshape(self.ntrain, -1, 1)
@@ -589,6 +684,7 @@ class car_design(object):
         self.file_path = args.data_path
         self.radius = args.radius
         self.test_fold_id = 0
+        self.args = args
 
     def get_samples(self, obj_path):
         folds = [f'param{i}' for i in range(9)]
@@ -620,10 +716,10 @@ class car_design(object):
         print("loading data")
         train_dataset, coef_norm = get_datalist(self.file_path, trainlst, norm=True,
                                                 savedir=os.path.join(self.file_path, 'preprocessed_data'),
-                                                preprocessed=preprocessed)
+                                                preprocessed=preprocessed, model=self.args.model)
         val_dataset = get_datalist(self.file_path, vallst, coef_norm=coef_norm,
                                    savedir=os.path.join(self.file_path, 'preprocessed_data'),
-                                   preprocessed=preprocessed)
+                                   preprocessed=preprocessed, model=self.args.model)
         print("load data finish")
         return train_dataset, val_dataset, coef_norm, vallst
 

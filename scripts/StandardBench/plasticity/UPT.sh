@@ -1,0 +1,24 @@
+python run.py \
+--gpu 1 \
+--data_path /data/fno/ \
+--loader plas \
+--geotype structured_2D \
+--task dynamic_conditional \
+--ntrain 900 \
+--ntest 80 \
+--T_out 20 \
+--time_input 1 \
+--space_dim 2 \
+--fun_dim 1 \
+--out_dim 4 \
+--unified_pos 0 \
+--lr 5.0e-4 \
+--epochs 1000 \
+--batch-size 8 \
+--eval 0 \
+--n_hidden 512 \
+--n_heads 8 \
+--n_layers 6 \
+--model UPT \
+--num_output_tokens 32 \
+--save_name plas_UPT

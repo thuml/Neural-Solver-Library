@@ -1,0 +1,24 @@
+python run.py \
+--gpu 1 \
+--data_path /data/PDEBench/2D/DarcyFlow/2D_DarcyFlow_beta1.0_Train.hdf5 \
+--loader pdebench_steady_darcy \
+--geotype structured_2D \
+--task steady \
+--downsamplex 1 \
+--downsampley 1 \
+--space_dim 2 \
+--fun_dim 1 \
+--out_dim 1 \
+--unified_pos 0 \
+--lr 5.0e-4 \
+--epochs 1000 \
+--ref 8 \
+--batch-size 20 \
+--ntrain 8000 \
+--eval 0 \
+--n_hidden 512 \
+--n_heads 8 \
+--n_layers 6 \
+--model UPT \
+--num_output_tokens 32 \
+--save_name pdebench_darcy_UPT

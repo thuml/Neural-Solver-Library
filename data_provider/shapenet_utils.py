@@ -137,10 +137,14 @@ def visualize_poly_data(poly_data, surface_filter, normal_filter=None):
     interactor.Start()
 
 
-def get_datalist(root, samples, norm=False, coef_norm=None, savedir=None, preprocessed=False):
+def get_datalist(root, samples, norm=False, coef_norm=None, savedir=None, preprocessed=False, model=None):
     dataset = []
     mean_in, mean_out = 0, 0
     std_in, std_out = 0, 0
+    if model == 'UPT':
+        domain_min = np.array([-2.0, -1.0, -4.5], dtype=np.float32)
+        domain_max = np.array([2.0, 4.5, 6.0], dtype=np.float32)
+        scale = 200
     for k, s in enumerate(samples):
         if preprocessed and savedir is not None:
             save_path = os.path.join(savedir, s)
@@ -210,6 +214,8 @@ def get_datalist(root, samples, norm=False, coef_norm=None, savedir=None, prepro
                 np.save(os.path.join(save_path, 'edge_index.npy'), edge_index)
 
         surf = torch.tensor(surf)
+        if model == 'UPT':
+            pos = (pos - domain_min) / (domain_max - domain_min) * scale
         pos = torch.tensor(pos)
         x = torch.tensor(init)
         y = torch.tensor(target)
