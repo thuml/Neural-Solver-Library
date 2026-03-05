@@ -137,7 +137,7 @@ def visualize_poly_data(poly_data, surface_filter, normal_filter=None):
     interactor.Start()
 
 
-def get_datalist(root, samples, norm=False, coef_norm=None, savedir=None, preprocessed=False, model=None):
+def get_datalist(root, samples, norm=False, coef_norm=None, savedir=None, preprocessed=False):
     dataset = []
     mean_in, mean_out = 0, 0
     std_in, std_out = 0, 0
