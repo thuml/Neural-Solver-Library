@@ -1,4 +1,4 @@
-python -u run.py \
+python run.py \
 --gpu 1 \
 --data_path /data/PDE_data/mlcfd_data/ \
 --loader car_design \
@@ -18,5 +18,4 @@ python -u run.py \
 --batch-size 1 \
 --epochs 200 \
 --eval 0 \
---save_name car_design_Transolver \
-2>&1 | tee logs/car_design_Transolver.log
+--save_name car_design_Transolver
