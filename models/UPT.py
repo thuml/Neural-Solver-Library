@@ -89,6 +89,8 @@ class Model(nn.Module):
         return x_hat
 
     def forward(self, x, fx, T=None, geo=None):
+        if self.min_max_normalizer is not None:
+            x = self.min_max_normalizer.encode(x)
         if self.args.geotype == 'unstructured':
             return self.unstructured_geo(x, fx, T)
         else:

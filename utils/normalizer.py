@@ -112,3 +112,30 @@ class UnitGaussianNormalizer(object):
     def cpu(self):
         self.mean = self.mean.cpu()
         self.std = self.std.cpu()
+
+class MinMaxNormalizer:
+    def __init__(self, x: torch.Tensor, scale: float = 200.0):
+        self.min = x.min()
+        self.max = x.max()
+        self.range = (self.max - self.min).clamp(min=1e-8)
+        self.scale_factor = scale
+
+    def encode(self, x: torch.Tensor) -> torch.Tensor:
+        """Map raw values → [0, scale_factor]."""
+        return (x - self.min) / self.range * self.scale_factor
+
+    def decode(self, x: torch.Tensor) -> torch.Tensor:
+        """Map [0, scale_factor] → raw values."""
+        return x / self.scale_factor * self.range + self.min
+
+    def cuda(self):
+        self.min = self.min.cuda()
+        self.max = self.max.cuda()
+        self.range = self.range.cuda()
+        return self
+
+    def cpu(self):
+        self.min = self.min.cpu()
+        self.max = self.max.cpu()
+        self.range = self.range.cpu()
+        return self

@@ -1,5 +1,5 @@
 python run.py \
---gpu 1 \
+--gpu 2 \
 --data_path /data/fno \
 --loader darcy \
 --geotype structured_2D \

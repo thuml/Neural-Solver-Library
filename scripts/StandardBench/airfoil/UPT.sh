@@ -1,5 +1,5 @@
 python run.py \
---gpu 3 \
+--gpu 1 \
 --data_path /data/fno/airfoil/naca \
 --loader airfoil \
 --geotype structured_2D \

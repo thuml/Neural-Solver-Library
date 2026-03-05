@@ -1,5 +1,5 @@
 python run.py \
---gpu 2 \
+--gpu 1 \
 --data_path /data/PDEBench/1D/diffusion-sorption/1D_diff-sorp_NA_NA.h5 \
 --loader pdebench_autoregressive \
 --geotype structured_1D \

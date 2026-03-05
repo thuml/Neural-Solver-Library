@@ -18,6 +18,7 @@ class Exp_Basic(object):
     def __init__(self, args):
         self.dataset, self.train_loader, self.test_loader, args.shapelist = get_data(args)
         self.model = get_model(args).cuda()
+        self.model.min_max_normalizer = getattr(self.dataset, "min_max_normalizer", None)
         self.args = args
         print(self.args)
         print(self.model)

@@ -1,5 +1,5 @@
 python run.py \
---gpu 3 \
+--gpu 4 \
 --data_path /data/fno \
 --loader ns \
 --geotype structured_2D \

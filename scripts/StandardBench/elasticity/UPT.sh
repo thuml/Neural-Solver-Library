@@ -1,5 +1,5 @@
 python run.py \
---gpu 1 \
+--gpu 3 \
 --data_path /data/fno/ \
 --loader elas \
 --geotype unstructured \

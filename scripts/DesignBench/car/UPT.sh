@@ -1,5 +1,5 @@
 python run.py \
---gpu 1 \
+--gpu 2 \
 --data_path /data/PDE_data/mlcfd_data/ \
 --loader car_design \
 --geotype unstructured \

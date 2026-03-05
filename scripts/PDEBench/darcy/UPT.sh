@@ -1,5 +1,5 @@
 python run.py \
---gpu 1 \
+--gpu 7 \
 --data_path /data/PDEBench/2D/DarcyFlow/2D_DarcyFlow_beta1.0_Train.hdf5 \
 --loader pdebench_steady_darcy \
 --geotype structured_2D \
