@@ -1,0 +1,26 @@
+python run.py \
+--gpu 2 \
+--data_path /data/fno \
+--loader darcy \
+--geotype structured_2D \
+--task steady \
+--normalize 1 \
+--derivloss 1 \
+--downsamplex 5 \
+--downsampley 5 \
+--space_dim 2 \
+--fun_dim 1 \
+--out_dim 1 \
+--lr 5.0e-4 \
+--unified_pos 1 \
+--ref 8 \
+--epochs 1000 \
+--batch-size 4 \
+--eval 0 \
+--n_hidden 512 \
+--n_heads 8 \
+--n_layers 6 \
+--mlp_ratio 2 \
+--model UPT \
+--num_output_tokens 32 \
+--save_name darcy_UPT

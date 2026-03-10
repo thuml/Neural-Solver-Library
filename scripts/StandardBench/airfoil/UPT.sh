@@ -1,0 +1,20 @@
+python run.py \
+--gpu 1 \
+--data_path /data/fno/airfoil/naca \
+--loader airfoil \
+--geotype structured_2D \
+--space_dim 2 \
+--fun_dim 0 \
+--out_dim 1 \
+--lr 5.0e-4 \
+--unified_pos 0 \
+--ref 8 \
+--epochs 1000 \
+--batch-size 8 \
+--eval 0 \
+--n_hidden 512 \
+--n_heads 8 \
+--n_layers 6 \
+--model UPT \
+--num_output_tokens 32 \
+--save_name airfoil_UPT

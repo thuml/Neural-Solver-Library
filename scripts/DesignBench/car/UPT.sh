@@ -1,5 +1,5 @@
 python run.py \
---gpu 1 \
+--gpu 2 \
 --data_path /data/PDE_data/mlcfd_data/ \
 --loader car_design \
 --geotype unstructured \
@@ -7,15 +7,15 @@ python run.py \
 --space_dim 3 \
 --fun_dim 7 \
 --out_dim 4 \
---model Transolver \
---n_hidden 256 \
+--model UPT \
+--n_hidden 512 \
 --n_heads 8 \
---n_layers 8 \
---mlp_ratio 2 \
---slice_num 32 \
+--n_layers 6 \
+--lr 5.0e-4 \
+--num_output_tokens 32 \
 --unified_pos 0 \
 --ref 8 \
 --batch-size 1 \
---epochs 200 \
+--epochs 1000 \
 --eval 0 \
---save_name car_design_Transolver
+--save_name car_design_UPT

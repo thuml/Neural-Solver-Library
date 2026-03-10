@@ -1,0 +1,19 @@
+python run.py \
+--gpu 3 \
+--data_path /data/fno/ \
+--loader elas \
+--geotype unstructured \
+--space_dim 2 \
+--fun_dim 0 \
+--out_dim 1 \
+--normalize 1 \
+--lr 5.0e-4 \
+--epochs 1000 \
+--batch-size 1 \
+--eval 0 \
+--n_hidden 512 \
+--n_heads 8 \
+--n_layers 6 \
+--model UPT \
+--num_output_tokens 32 \
+--save_name elas_UPT

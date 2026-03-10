@@ -8,7 +8,7 @@ import scipy.io as scio
 from data_provider.shapenet_utils import get_datalist
 from data_provider.shapenet_utils import GraphDataset
 from torch.utils.data import Dataset
-from utils.normalizer import UnitTransformer, UnitGaussianNormalizer
+from utils.normalizer import UnitTransformer, UnitGaussianNormalizer, MinMaxNormalizer
 
 
 class plas(object):
@@ -112,6 +112,8 @@ class plas(object):
         pos_train = pos.repeat(self.ntrain, 1, 1)
         pos_test = pos.repeat(self.ntest, 1, 1)
 
+        self.min_max_normalizer = MinMaxNormalizer(pos_train)
+
         t = np.linspace(0, 1, self.T_out)
         t = torch.tensor(t, dtype=torch.float).unsqueeze(0)
         t_train = t.repeat(self.ntrain, 1)
@@ -154,6 +156,8 @@ class elas(object):
         test_xy = input_xy[-self.ntest:]
 
         print(input_s.shape, input_xy.shape)
+
+        self.min_max_normalizer = MinMaxNormalizer(train_xy)
 
         if self.normalize:
             # Use appropriate normalizer based on norm_type
@@ -216,6 +220,8 @@ class pipe(object):
         x_test = x_test.reshape(self.ntest, -1, 2)
         y_train = y_train.reshape(self.ntrain, -1, 1)
         y_test = y_test.reshape(self.ntest, -1, 1)
+
+        self.min_max_normalizer = MinMaxNormalizer(x_train)
 
         if self.normalize:
             # Use appropriate normalizer based on norm_type
@@ -284,6 +290,8 @@ class airfoil(object):
         x_test = x_test.reshape(self.ntest, -1, 2)
         y_train = y_train.reshape(self.ntrain, -1, 1)
         y_test = y_test.reshape(self.ntest, -1, 1)
+
+        self.min_max_normalizer = MinMaxNormalizer(x_train)
 
         if self.normalize:
             # Use appropriate normalizer based on norm_type
@@ -377,6 +385,8 @@ class darcy(object):
         pos_train = pos.repeat(self.ntrain, 1, 1)
         pos_test = pos.repeat(self.ntest, 1, 1)
 
+        self.min_max_normalizer = MinMaxNormalizer(pos_train)
+
         train_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(pos_train, x_train, y_train),
                                                    batch_size=self.batch_size, shuffle=True)
         test_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(pos_test, x_test, y_test),
@@ -449,6 +459,8 @@ class ns(object):
         pos_train = pos.repeat(self.ntrain, 1, 1)
         pos_test = pos.repeat(self.ntest, 1, 1)
 
+        self.min_max_normalizer = MinMaxNormalizer(pos_train)
+
         train_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(pos_train, train_a, train_u),
                                                    batch_size=self.batch_size, shuffle=True)
         test_loader = torch.utils.data.DataLoader(torch.utils.data.TensorDataset(pos_test, test_a, test_u),
@@ -474,6 +486,10 @@ class pdebench_autoregressive(object):
         test_dataset = pdebench_dataset_autoregressive(file_path=self.file_path, train_ratio=self.train_ratio,
                                                        test=True,
                                                        T_in=self.T_in, T_out=self.T_out, out_dim=self.out_dim)
+        
+        all_grids = torch.stack([train_dataset[i][0] for i in range(len(train_dataset))])
+        self.min_max_normalizer = MinMaxNormalizer(all_grids)
+
         train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=self.batch_size, shuffle=True)
         test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=self.batch_size, shuffle=True)
 
@@ -572,6 +588,8 @@ class pdebench_steady_darcy(object):
         x_train = data_nu[:self.ntrain, :, :].reshape(self.ntrain, -1, 1)
         y_train = data_solution[:self.ntrain, 0, :, :].reshape(self.ntrain, -1, 1)  # solutions only have 1 channel
 
+        self.min_max_normalizer = MinMaxNormalizer(pos_train)
+
         pos_test = grid[self.ntrain:, :, :, :].reshape(data_nu.shape[0] - self.ntrain, -1, 2)
         x_test = data_nu[self.ntrain:, :, :].reshape(data_nu.shape[0] - self.ntrain, -1, 1)
         y_test = data_solution[self.ntrain:, 0, :, :].reshape(data_nu.shape[0] - self.ntrain, -1,
@@ -621,6 +639,10 @@ class car_design(object):
         train_dataset, coef_norm = get_datalist(self.file_path, trainlst, norm=True,
                                                 savedir=os.path.join(self.file_path, 'preprocessed_data'),
                                                 preprocessed=preprocessed)
+
+        all_pos = torch.cat([data.pos for data in train_dataset], dim=0)
+        self.min_max_normalizer = MinMaxNormalizer(all_pos)
+        
         val_dataset = get_datalist(self.file_path, vallst, coef_norm=coef_norm,
                                    savedir=os.path.join(self.file_path, 'preprocessed_data'),
                                    preprocessed=preprocessed)
