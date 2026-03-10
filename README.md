@@ -25,6 +25,7 @@ This library currently supports the following benchmarks:
 Here is the list of supported neural PDE solvers:
 
 - [x] **Transolver** - Transolver: A Fast Transformer Solver for PDEs on General Geometries [[ICML 2024]](https://arxiv.org/abs/2402.02366) [[Code]](https://github.com/thuml/Neural-Solver-Library/blob/main/models/Transolver.py)
+- [x] **UPT** - Universal Physics Transformers: A Framework For Efficiently Scaling Neural Operators [[NeurIPS 2024]](https://arxiv.org/abs/2402.12365) [[Code]](https://github.com/thuml/Neural-Solver-Library/blob/main/models/UPT.py)
 - [x] **ONO** - Improved Operator Learning by Orthogonal Attention [[ICML 2024]](https://arxiv.org/abs/2310.12487v3) [[Code]](https://github.com/thuml/Neural-Solver-Library/blob/main/models/ONO.py)
 - [x] **Factformer** - Scalable Transformer for PDE Surrogate Modeling [[NeurIPS 2023]](https://arxiv.org/abs/2305.17560) [[Code]](https://github.com/thuml/Neural-Solver-Library/blob/main/models/Factformer.py)
 - [x] **U-NO** - U-NO: U-shaped Neural Operators [[TMLR 2023]](https://openreview.net/pdf?id=j3oQF9coJd) [[Code]](https://github.com/thuml/Neural-Solver-Library/blob/main/models/U_NO.py)
@@ -90,10 +91,11 @@ If you have any questions or want to use the code, please contact our team or de
 
 Current maintenance team:
 
-- Haixu Wu (Ph.D. student, [wuhx23@mails.tsinghua.edu.cn](mailto:wuhx23@mails.tsinghua.edu.cn))
-- Yuanxu Sun (Undergraduate, sunyuanx22@mails.tsinghua.edu.cn)
-- Hang Zhou (Master student, zhou-h23@mails.tsinghua.edu.cn)
+- Haixu Wu (Ph.D., wuhaixu98@gmail.com)
+- Yuanxu Sun (Master student, sunyuanx22@mails.tsinghua.edu.cn)
+- Hang Zhou (Ph.D. student, zhou-h23@mails.tsinghua.edu.cn)
 - Yuezhou Ma (Ph.D. student, mayz24@mails.tsinghua.edu.cn)
+- Haonan Shangguan (Ph.D. student, sghn25@mails.tsinghua.edu.cn)
 
 ## Acknowledgement
 
